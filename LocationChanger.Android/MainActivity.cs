@@ -1,20 +1,19 @@
-﻿using System;
-using Android.App;
+﻿using Android.App;
 using Android.Widget;
 using Android.OS;
 using Android.Locations;
-using LocationChanger.Services;
+using LocationChanger.Android.Services;
 
 namespace LocationChanger.Android
 {
     [Activity(Label = "LocationChanger.Android", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        Button button;
+        Button _button;
         // labels for getting location results
-        TextView latText;
-        TextView longText;
-        int count = 1;
+        TextView _latText;
+        TextView _longText;
+        int _count = 1;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -25,22 +24,15 @@ namespace LocationChanger.Android
 
             // Get our button from the layout resource,
             // and attach an event to it
-            button = FindViewById<Button>(Resource.Id.MyButton);
-            latText = FindViewById<TextView>(Resource.Id.lat);
-            longText = FindViewById<TextView>(Resource.Id.longx);
+            _button = FindViewById<Button>(Resource.Id.MyButton);
+            _latText = FindViewById<TextView>(Resource.Id.lat);
+            _longText = FindViewById<TextView>(Resource.Id.longx);
 
-            button.Click += delegate { button.Text = string.Format("{0} clicks!", count++); };
+            _button.Click += delegate
+            {
+                _button.Text = $"{_count++} clicks!";
+            };
             AppService.StartLocationService();
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-        }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
         }
 
         protected override void OnDestroy()
@@ -51,10 +43,10 @@ namespace LocationChanger.Android
 
         public void HandleLocationChanged(object sender, LocationChangedEventArgs e)
         {
-            global::Android.Locations.Location location = e.Location;
+            Location location = e.Location;
             RunOnUiThread(() => {
-                latText.Text = $"Latitude: {location.Latitude}";
-                longText.Text = $"Longitude: {location.Longitude}";
+                _latText.Text = $"Latitude: {location.Latitude}";
+                _longText.Text = $"Longitude: {location.Longitude}";
             });
         }
     }

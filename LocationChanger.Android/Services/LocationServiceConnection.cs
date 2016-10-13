@@ -1,10 +1,8 @@
 using System;
-
 using Android.Content;
 using Android.OS;
-using LocationChanger.Android.Services;
 
-namespace Location.Droid.Services
+namespace LocationChanger.Android.Services
 {
     public class LocationServiceConnection : Java.Lang.Object, IServiceConnection
     {

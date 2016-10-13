@@ -1,42 +1,35 @@
 using System;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
-using System.Threading.Tasks;
-using LocationChanger.Android.Services;
-using Location.Droid.Services;
 
-namespace LocationChanger.Services
+namespace LocationChanger.Android.Services
 {
     public class AppService
     {
         public event EventHandler<ServiceConnectedEventArgs> LocationServiceConnected = delegate { };
-        protected static LocationServiceConnection locationServiceConnection;
-        public static AppService Current
-        {
-            get { return current; }
-        }
-        private static AppService current;
+        protected static LocationServiceConnection LocationServiceConnection;
+        public static AppService Current { get; }
 
         public LocationService LocationService
         {
             get
             {
-                if (locationServiceConnection.Binder == null)
+                if (LocationServiceConnection.Binder == null)
                     throw new Exception("Service not bound yet");
-                return locationServiceConnection.Binder.Service;
+                return LocationServiceConnection.Binder.Service;
             }
         }
 
         static AppService()
         {
-            current = new AppService();
+            Current = new AppService();
         }
 
         public AppService()
         {
-            locationServiceConnection = new LocationServiceConnection(null);
-            locationServiceConnection.ServiceConnected += (object sender, ServiceConnectedEventArgs e) => {
+            LocationServiceConnection = new LocationServiceConnection(null);
+            LocationServiceConnection.ServiceConnected += (object sender, ServiceConnectedEventArgs e) => {
                 LocationServiceConnected(this, e);
             };
         }
@@ -46,20 +39,17 @@ namespace LocationChanger.Services
             new Task(() => {
                 Application.Context.StartService(new Intent(Application.Context, typeof(LocationService)));
                 Intent locationServiceIntent = new Intent(Application.Context, typeof(LocationService));
-                Application.Context.BindService(locationServiceIntent, locationServiceConnection, Bind.AutoCreate);
+                Application.Context.BindService(locationServiceIntent, LocationServiceConnection, Bind.AutoCreate);
             }).Start();
         }
 
         public static void StopLocationService()
         {
-            if (locationServiceConnection != null)
+            if (LocationServiceConnection != null)
             {
-                Application.Context.UnbindService(locationServiceConnection);
+                Application.Context.UnbindService(LocationServiceConnection);
             }
-            if (Current.LocationService != null)
-            {
-                Current.LocationService.StopSelf();
-            }
+            Current.LocationService?.StopSelf();
         }
     }
 }

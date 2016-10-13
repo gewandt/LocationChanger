@@ -5,11 +5,8 @@ namespace LocationChanger.Android.Services
     public class LocationServiceBinder : Binder
     {
         protected LocationService service;
-        public LocationService Service
-        {
-            get { return this.service; }
-        }
-        
+        public LocationService Service => service;
+
         public bool IsBound { get; set; }
 
         public LocationServiceBinder(LocationService service)

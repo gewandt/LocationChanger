@@ -45,11 +45,11 @@ namespace LocationChanger.Android.Services
 
         public void StartLocationUpdates()
         {
-            var locationCriteria = new Criteria();
-
-            locationCriteria.Accuracy = Accuracy.NoRequirement;
-            locationCriteria.PowerRequirement = Power.NoRequirement;
-
+            var locationCriteria = new Criteria
+            {
+                Accuracy = Accuracy.NoRequirement,
+                PowerRequirement = Power.NoRequirement
+            };
             var locationProvider = LocMgr.GetBestProvider(locationCriteria, true);
 
             LocMgr.RequestLocationUpdates(locationProvider, 2000, 0, this);
