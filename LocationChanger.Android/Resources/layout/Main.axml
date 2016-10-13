@@ -10,4 +10,20 @@
     android:layout_height="wrap_content" 
     android:text="@string/Hello"
     />
+  <TextView
+    android:text="latitude"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/lat"
+    android:textSize="50sp"
+    android:paddingLeft="25dp" />
+  <TextView
+    android:text="longitude"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/longx"
+    android:textSize="50sp"
+    android:paddingLeft="25dp" />
 </LinearLayout>
